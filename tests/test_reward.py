@@ -31,8 +31,8 @@ def params():
         ALL_WHEELS_ON_TRACK: False, 
         X: 0.0,
         Y: 0.0,
-        CLOSEST_OBJECTS: [ 0, 0 ],
-        CLOSEST_WAYPOINTS: [ 0, 0],
+        CLOSEST_OBJECTS: [ ],
+        CLOSEST_WAYPOINTS: [ ],
         DISTANCE_FROM_CENTER: 0.0,
         IS_CRASHED: False, 
         IS_LEFT_OF_CENTER: False, 
@@ -50,9 +50,21 @@ def params():
         STEPS: 0, 
         TRACK_LENGTH: 0, 
         TRACK_WIDTH: 0, 
-        WAYPOINTS: [], 
+        WAYPOINTS: [ ], 
     }
 
-def test_reward( params ):
+def speed_straigt_line( params, speed = 5.0, expectedReward = 1.0):
+    params[ SPEED ] = speed
+    params[ CLOSEST_WAYPOINTS ] = [ 0, 1 ]
+    params[ WAYPOINTS ] = [ 25, 26 ]
     reward = reward_function( params )
-    assert reward == 0.0
+    assert reward == expectedReward
+
+def test_highest_speed_straight_line( params ):
+    speed_straigt_line( params, speed = 5.0, expectedReward = 1.0 )
+
+def test_high_speed_4_straight_line( params ):
+    speed_straigt_line( params, speed = 4.0, expectedReward = 1.0 )
+
+def test_high_speed_3_8_straight_line( params ):
+    speed_straigt_line( params, speed = 3.8, expectedReward = 0.8 )
